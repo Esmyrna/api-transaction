@@ -21,19 +21,12 @@ import spring_boot.desafio.transactionApi.domain.enums.UserType;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fullName;
-    @Column(unique = true, nullable = false)
     private String email;
-    @Column(unique = true, nullable = false)
     private String cpfCnpj;
     private String password;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wallet wallet;
     private UserType userType;
 }

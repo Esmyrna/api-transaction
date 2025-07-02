@@ -13,29 +13,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "transaction")
 @Builder
 public class Transaction {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private BigDecimal balance;
-
-    @JoinColumn(name = "payer_id")
-    @ManyToOne
     private User payer;
-
-    @JoinColumn(name = "receiver_id")
-    @ManyToOne
     private User receiver;
-
     private LocalDateTime transactionDateTime;
 
-    @PrePersist
-    void PrePersist(){
-        transactionDateTime = LocalDateTime.now();
-    }
 }

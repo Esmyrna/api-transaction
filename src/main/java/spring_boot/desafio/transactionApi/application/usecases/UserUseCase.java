@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import spring_boot.desafio.transactionApi.domain.entities.User;
 import spring_boot.desafio.transactionApi.domain.exceptions.UserNotFound;
+import spring_boot.desafio.transactionApi.infra.mappers.UserMapper;
 import spring_boot.desafio.transactionApi.infra.repositories.UserRepository;
 
 @Service
@@ -14,6 +15,7 @@ public class UserUseCase {
 
     public User findUserById(Long id){
         return userRepository.findById(id)
-        .orElseThrow(() -> new UserNotFound("Usuário não encontrado"));
+                .map(UserMapper::toDomain)
+                .orElseThrow(() -> new UserNotFound("Usuário não encontrado"));
     }
 }

@@ -18,17 +18,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "wallet")
 public class Wallet {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-
     private BigDecimal balance;
-
-    @JoinColumn(name = "user_id")
-    @OneToOne
     private User user;
  
 }

@@ -13,6 +13,8 @@ import spring_boot.desafio.transactionApi.domain.entities.User;
 import spring_boot.desafio.transactionApi.domain.entities.Wallet;
 import spring_boot.desafio.transactionApi.domain.enums.UserType;
 import spring_boot.desafio.transactionApi.domain.exceptions.BadRequest;
+import spring_boot.desafio.transactionApi.infra.entities.TransactionEntity;
+import spring_boot.desafio.transactionApi.infra.mappers.TransactionMapper;
 import spring_boot.desafio.transactionApi.infra.repositories.TransactionRepository;
 
 @Service
@@ -25,7 +27,7 @@ public class TransactionUseCase {
     private final TransactionRepository transactionRepository;
     private final ClientNotificationUseCase clientNotification;
 
-                                                                                                                                                                                                                                                                                                                               @Transactional
+    @Transactional
     public void transferValues(TransactionDTO transactionDTO){
         User payer = userUseCase.findUserById(transactionDTO.payer());
         User payee = userUseCase.findUserById(transactionDTO.payee());
@@ -46,8 +48,8 @@ public class TransactionUseCase {
         .payer(payer)
         .receiver(payee)
         .build();
-        
-        transactionRepository.save(transaction);
+        TransactionEntity transactionEntity = TransactionMapper.toEntity(transaction);
+        transactionRepository.save(transactionEntity);
         sendNotification();
 
     }
