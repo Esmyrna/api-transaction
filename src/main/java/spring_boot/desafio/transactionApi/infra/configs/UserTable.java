@@ -7,6 +7,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import spring_boot.desafio.transactionApi.domain.entities.User;
 import spring_boot.desafio.transactionApi.domain.entities.Wallet;
 import spring_boot.desafio.transactionApi.domain.enums.UserType;
+import spring_boot.desafio.transactionApi.infra.entities.UserEntity;
+import spring_boot.desafio.transactionApi.infra.entities.WalletEntity;
+import spring_boot.desafio.transactionApi.infra.mappers.UserMapper;
+import spring_boot.desafio.transactionApi.infra.mappers.WalletMapper;
 import spring_boot.desafio.transactionApi.infra.repositories.UserRepository;
 import spring_boot.desafio.transactionApi.infra.repositories.WalletRepository;
 
@@ -30,14 +34,22 @@ public class UserTable {
                 User logist = new User(null, "Loja Exemplo", "loja@email.com", "33333333333",
                         encoder.encode("123456"), null, UserType.LOGIST);
 
-                userRepository.saveAll(List.of(user1, user2, logist));
+                // Convertendo para entidades antes de salvar
+                List<UserEntity> userEntities = List.of(user1, user2, logist).stream()
+                        .map(UserMapper::toEntity)
+                        .toList();
+                userRepository.saveAll(userEntities);
+
 
 
                 Wallet wallet1 = new Wallet(null, new BigDecimal("1000.00"), user1);
                 Wallet wallet2 = new Wallet(null, new BigDecimal("2000.00"), user2);
                 Wallet wallet3 = new Wallet(null, new BigDecimal("5000.00"), logist);
 
-                walletRepository.saveAll(List.of(wallet1, wallet2, wallet3));
+                List<WalletEntity> walletEntities = List.of(wallet1, wallet2, wallet3).stream()
+                        .map(WalletMapper::toEntity)
+                        .toList();
+                walletRepository.saveAll(walletEntities);
 
                 System.out.println("Usuários e carteiras populados com sucesso!");
             }
